@@ -1,5 +1,5 @@
 class PassInfo {
-  late int id;
+  late int id = 0;
   String? passName;
   String? username;
   String? password;
@@ -8,20 +8,17 @@ class PassInfo {
   PassInfo.withId(this.id, this.passName, this.username, this.password);
 
   Map<String, dynamic> toMap() {
-    var map = Map<String, dynamic>();
+    var map = <String, dynamic>{};
     map["passName"] = passName;
     map["username"] = username;
     map["password"] = password;
-    if (id != null) {
-      map["id"] = id;
-    }
     return map;
   }
 
   PassInfo.fromObject(dynamic o) {
-    this.id = int.tryParse(o["id"]) ?? o["id = 0"];
-    this.passName = o["passName"];
-    this.username = o["username"];
-    this.password = o["password"];
+    id = int.tryParse(o["id"].toString())!;
+    passName = o["passName"];
+    username = o["username"];
+    password = o["password"];
   }
 }

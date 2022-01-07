@@ -8,7 +8,7 @@ class DbHelper {
   late Database _db;
 
   Future<Database> get db async {
-    _db ??= await initializeDb();
+    _db = await initializeDb();
     return _db;
   }
 
@@ -23,7 +23,7 @@ class DbHelper {
         "Create table passwordInfo(id integer primary key, passName text, username text, password text)");
   }
 
-  Future<List> getPassInfos() async {
+  Future<List<PassInfo>> getPassInfos() async {
     Database db = await this.db;
     var result = await db.query("passwordInfo");
     return List.generate(result.length, (i) {
