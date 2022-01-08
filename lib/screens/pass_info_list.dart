@@ -21,15 +21,14 @@ class _PassInfoListState extends State<PassInfoList> {
   int passInfoCount = 0;
 
   List<Color> colors = [
-    Color(0xb58ecae6),
-    Color(0xb7219ebc),
-    Color(0x88023047),
-    Color(0x88ffb703),
-    Color(0x81fb8500)
+    Color(0xe6c2969e),
+    Color(0xe6a07780),
+    Color(0xe666784b),
+    Color(0xe687986a)
   ];
   final random = Random();
   Color colorRandom() {
-    return colors[random.nextInt(5)];
+    return colors[random.nextInt(4)];
   }
 
   List<String> choices = ["Detail", "Edit", "Delete"];
@@ -46,12 +45,12 @@ class _PassInfoListState extends State<PassInfoList> {
       child: Scaffold(
         appBar: AppBar(
           title: Text("Password Informations"),
-          backgroundColor: Color(0xb58ecae6),
+          backgroundColor: Color(0xff87986a),
         ),
         body: buildPassInfoList(),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Color(0xb58ecae6),
-          splashColor: Color(0x81fb8500),
+          backgroundColor: Color(0xff87986a),
+          splashColor: Color(0xffa07780),
           onPressed: () {
             goToPasswordAdd();
           },
@@ -73,7 +72,7 @@ class _PassInfoListState extends State<PassInfoList> {
               title: Text("${passInfos[position].passName}"),
               subtitle: Text("${passInfos[position].username}"),
               trailing: PopupMenuButton(
-                color: Color(0xb58ecae6),
+                color: Color(0xade5b6c0),
                 onSelected: choiceAction,
                 itemBuilder: (BuildContext context) {
                   return choices.map((choice) {
@@ -100,10 +99,8 @@ class _PassInfoListState extends State<PassInfoList> {
   void goToPasswordAdd() async {
     bool result = await Navigator.push(
         context, MaterialPageRoute(builder: (context) => AddPassword()));
-    if (result != null) {
-      if (result == true) {
-        getPasswords();
-      }
+    if (result == true) {
+      getPasswords();
     }
   }
 

@@ -11,7 +11,7 @@ class PasswordDetail extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text("Password Detail"),
-          backgroundColor: Color(0xb58ecae6),
+          backgroundColor: Color(0xff87986a),
         ),
         body: Column(
           children: <Widget>[
@@ -32,7 +32,7 @@ class PasswordDetail extends StatelessWidget {
         padding: EdgeInsets.all(10.0),
         margin: EdgeInsets.all(13.0),
         alignment: Alignment.center,
-        color: Color(0xb58ecae6),
+        color: Color(0xffb5c99a),
         child: detailRow('PassName', '${passInfo.passName}'));
   }
 
@@ -41,7 +41,7 @@ class PasswordDetail extends StatelessWidget {
         padding: EdgeInsets.all(10.0),
         margin: EdgeInsets.all(13.0),
         alignment: Alignment.center,
-        color: Color(0xb58ecae6),
+        color: Color(0xffb5c99a),
         child: detailRow('Username', '${passInfo.username}'));
   }
 
@@ -50,7 +50,7 @@ class PasswordDetail extends StatelessWidget {
         padding: EdgeInsets.all(10.0),
         margin: EdgeInsets.all(13.0),
         alignment: Alignment.center,
-        color: Color(0xb58ecae6),
+        color: Color(0xffb5c99a),
         child: detailRow('Password', '${passInfo.password}'));
   }
 

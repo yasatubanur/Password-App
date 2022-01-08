@@ -21,16 +21,28 @@ class _AddPasswordState extends State<AddPassword> {
       child: Scaffold(
         appBar: AppBar(
           title: Text("Add Password"),
-          backgroundColor: Color(0xb58ecae6),
+          backgroundColor: Color(0xff87986a),
+          actions: [
+            TextButton(
+              style: TextButton.styleFrom(
+                primary: Color(0xff87986a),
+                backgroundColor: Colors.white60,
+              ),
+              onPressed: () {
+                addPassword();
+              },
+              child: Text("Save"),
+            ),
+          ],
         ),
         body: Padding(
           padding: EdgeInsets.all(30.0),
           child: Column(
             children: <Widget>[
+              const SizedBox(height: 10),
               buildPassNameField(),
               buildUsernameField(),
               buildPasswordField(),
-              buildSaveButton(),
             ],
           ),
         ),
@@ -38,7 +50,7 @@ class _AddPasswordState extends State<AddPassword> {
     );
   }
 
-  TextField buildPassNameField() {
+  Widget buildPassNameField() {
     return TextField(
       decoration: InputDecoration(labelText: "Password Name"),
       controller: txtPassName,
@@ -52,22 +64,10 @@ class _AddPasswordState extends State<AddPassword> {
     );
   }
 
-  TextField buildPasswordField() {
+  Widget buildPasswordField() {
     return TextField(
       decoration: InputDecoration(labelText: "Password"),
       controller: txtPassword,
-    );
-  }
-
-  buildSaveButton() {
-    return Padding(
-      padding: const EdgeInsets.all(25.0),
-      child: TextButton(
-        onPressed: () {
-          addPassword();
-        },
-        child: Text("Save"),
-      ),
     );
   }
 
