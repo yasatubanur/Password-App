@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:password_app/data/db_helper.dart';
 import 'package:password_app/models/pass_info.dart';
+import 'package:password_app/screens/password_detail.dart';
 
 import 'add_password.dart';
 
@@ -25,19 +26,21 @@ class _PassInfoListState extends State<PassInfoList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Password Informations"),
-        backgroundColor: Color(0xb58ecae6),
-      ),
-      body: buildPassInfoList(),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xb58ecae6),
-        onPressed: () {
-          goToPasswordAdd();
-        },
-        child: Icon(Icons.add),
-        tooltip: "Add new password",
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Password Informations"),
+          backgroundColor: Color(0xb58ecae6),
+        ),
+        body: buildPassInfoList(),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Color(0xb58ecae6),
+          onPressed: () {
+            goToPasswordAdd();
+          },
+          child: Icon(Icons.add),
+          tooltip: "Add new password",
+        ),
       ),
     );
   }
@@ -52,7 +55,9 @@ class _PassInfoListState extends State<PassInfoList> {
             child: ListTile(
               title: Text("${passInfos[position].passName}"),
               subtitle: Text("${passInfos[position].username}"),
-              onTap: () {},
+              onTap: () {
+                goToDetailPage();
+              },
             ),
           );
         });
@@ -71,8 +76,21 @@ class _PassInfoListState extends State<PassInfoList> {
   void getPasswords() async {
     var passInfosFuture = dbHelper.getPassInfos();
     passInfosFuture.then((data) {
-      passInfos = data;
-      passInfoCount = data.length;
+      setState(() {
+        print("getPassword.data : ${data.length}");
+        passInfos = data;
+        passInfoCount = data.length;
+      });
     });
+  }
+
+  void goToDetailPage() async {
+    bool result = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => DetailPassword()));
+    if (result != null) {
+      if (result == true) {
+        getPasswords();
+      }
+    }
   }
 }
