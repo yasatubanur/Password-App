@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:password_app/data/db_helper.dart';
@@ -18,6 +20,18 @@ class _PassInfoListState extends State<PassInfoList> {
   late List<PassInfo> passInfos;
   int passInfoCount = 0;
 
+  List<Color> colors = [
+    Color(0xb58ecae6),
+    Color(0xb7219ebc),
+    Color(0x88023047),
+    Color(0x88ffb703),
+    Color(0x81fb8500)
+  ];
+  final random = Random();
+  Color colorRandom() {
+    return colors[random.nextInt(5)];
+  }
+
   @override
   void initState() {
     getPasswords();
@@ -35,6 +49,7 @@ class _PassInfoListState extends State<PassInfoList> {
         body: buildPassInfoList(),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Color(0xb58ecae6),
+          splashColor: Color(0x81fb8500),
           onPressed: () {
             goToPasswordAdd();
           },
@@ -50,9 +65,9 @@ class _PassInfoListState extends State<PassInfoList> {
         itemCount: passInfoCount,
         itemBuilder: (BuildContext context, int position) {
           return Card(
-            color: Color(0xb58ecae6),
             elevation: 3.0,
             child: ListTile(
+              tileColor: colorRandom(),
               title: Text("${passInfos[position].passName}"),
               subtitle: Text("${passInfos[position].username}"),
               onTap: () {
