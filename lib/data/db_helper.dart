@@ -34,6 +34,7 @@ class DbHelper {
   Future<int> insert(PassInfo passInfo) async {
     Database db = await this.db;
     var result = await db.insert("passwordInfo", passInfo.toMap());
+    print("dbHelper.insert : result : $result");
     return result;
   }
 

@@ -16,7 +16,7 @@ class PassInfo {
   }
 
   PassInfo.fromObject(dynamic o) {
-    id = int.tryParse(o["id"].toString())!;
+    id = int.tryParse(o["id"].toString()) ?? 0;
     passName = o["passName"];
     username = o["username"];
     password = o["password"];

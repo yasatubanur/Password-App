@@ -72,6 +72,8 @@ class _AddPasswordState extends State<AddPassword> {
   }
 
   void addPassword() async {
+    print(
+        "AddPasword: textName: ${txtPassName.text},username: ${txtUsername.text} ,password: ${txtPassword.text}");
     var result = await dbHelper
         .insert(PassInfo(txtPassName.text, txtUsername.text, txtPassword.text));
     Navigator.pop(context, true);
