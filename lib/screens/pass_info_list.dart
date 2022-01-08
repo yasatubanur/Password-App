@@ -32,6 +32,8 @@ class _PassInfoListState extends State<PassInfoList> {
     return colors[random.nextInt(5)];
   }
 
+  List<String> choices = ["Detail", "Edit", "Delete"];
+
   @override
   void initState() {
     getPasswords();
@@ -70,6 +72,18 @@ class _PassInfoListState extends State<PassInfoList> {
               tileColor: colorRandom(),
               title: Text("${passInfos[position].passName}"),
               subtitle: Text("${passInfos[position].username}"),
+              trailing: PopupMenuButton(
+                color: Color(0xb58ecae6),
+                onSelected: choiceAction,
+                itemBuilder: (BuildContext context) {
+                  return choices.map((choice) {
+                    return PopupMenuItem(
+                      child: Text(choice),
+                      value: choice,
+                    );
+                  }).toList();
+                },
+              ),
               onTap: () {
                 Navigator.push(
                     context,
@@ -102,5 +116,13 @@ class _PassInfoListState extends State<PassInfoList> {
         passInfoCount = data.length;
       });
     });
+  }
+
+  void choiceAction(String choice) {
+    if (choice == choices[0]) {
+      print("Edit");
+    } else if (choice == choices[1]) {
+      print("DElete");
+    }
   }
 }
