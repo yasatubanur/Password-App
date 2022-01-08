@@ -71,7 +71,12 @@ class _PassInfoListState extends State<PassInfoList> {
               title: Text("${passInfos[position].passName}"),
               subtitle: Text("${passInfos[position].username}"),
               onTap: () {
-                goToDetailPage();
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => PasswordDetail(
+                              passInfo: passInfos[position],
+                            )));
               },
             ),
           );
@@ -97,15 +102,5 @@ class _PassInfoListState extends State<PassInfoList> {
         passInfoCount = data.length;
       });
     });
-  }
-
-  void goToDetailPage() async {
-    bool result = await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => DetailPassword()));
-    if (result != null) {
-      if (result == true) {
-        getPasswords();
-      }
-    }
   }
 }
