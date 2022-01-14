@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:password_app/constants/constants.dart';
 import 'package:password_app/data/db_helper.dart';
 import 'package:password_app/models/pass_info.dart';
 
@@ -20,13 +22,23 @@ class _AddPasswordState extends State<AddPassword> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Add Password"),
-          backgroundColor: Color(0xff87986a),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_rounded),
+            color: Colors.black,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: Text(
+            "Add Password",
+            style: TextStyle(color: Colors.black),
+          ),
+          backgroundColor: appGreen,
           actions: [
             TextButton(
               style: TextButton.styleFrom(
-                primary: Color(0xff87986a),
-                backgroundColor: Colors.white60,
+                primary: Colors.black,
+                backgroundColor: Colors.transparent,
               ),
               onPressed: () {
                 addPassword();
@@ -39,7 +51,7 @@ class _AddPasswordState extends State<AddPassword> {
           padding: EdgeInsets.all(30.0),
           child: Column(
             children: <Widget>[
-              const SizedBox(height: 10),
+              const SizedBox(height: 15),
               buildPassNameField(),
               buildUsernameField(),
               buildPasswordField(),
@@ -52,21 +64,33 @@ class _AddPasswordState extends State<AddPassword> {
 
   Widget buildPassNameField() {
     return TextField(
-      decoration: InputDecoration(labelText: "Password Name"),
+      decoration: InputDecoration(
+        labelText: "Password Name",
+        hintText: "Password App",
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: appGreen2),
+        ),
+      ),
       controller: txtPassName,
     );
   }
 
   Widget buildUsernameField() {
     return TextField(
-      decoration: InputDecoration(labelText: "Username"),
+      decoration: InputDecoration(
+        labelText: "Username",
+        hintText: "yasatuba",
+      ),
       controller: txtUsername,
     );
   }
 
   Widget buildPasswordField() {
     return TextField(
-      decoration: InputDecoration(labelText: "Password"),
+      decoration: InputDecoration(
+        labelText: "Password",
+        hintText: "12345",
+      ),
       controller: txtPassword,
     );
   }
