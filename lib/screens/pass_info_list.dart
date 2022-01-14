@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:password_app/constants/constants.dart';
 import 'package:password_app/data/db_helper.dart';
 import 'package:password_app/models/pass_info.dart';
 import 'package:password_app/screens/password_detail.dart';
@@ -21,14 +22,12 @@ class _PassInfoListState extends State<PassInfoList> {
   int passInfoCount = 0;
 
   List<Color> colors = [
-    Color(0xe6c2969e),
-    Color(0xe6a07780),
-    Color(0xe666784b),
-    Color(0xe687986a)
+    Color(0xe697A97C),
+    Color(0xe6C9AE9B),
   ];
   final random = Random();
   Color colorRandom() {
-    return colors[random.nextInt(4)];
+    return colors[random.nextInt(2)];
   }
 
   List<String> choices = ["Detail", "Edit", "Delete"];
@@ -44,13 +43,14 @@ class _PassInfoListState extends State<PassInfoList> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Password Informations"),
-          backgroundColor: Color(0xff87986a),
+          title: Text("Password Informations",
+              style: TextStyle(color: Colors.white60)),
+          backgroundColor: appGreen,
         ),
         body: buildPassInfoList(),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Color(0xff87986a),
-          splashColor: Color(0xffa07780),
+          backgroundColor: appGreen,
+          splashColor: Color(0xe6a07780),
           onPressed: () {
             goToPasswordAdd();
           },
@@ -61,39 +61,57 @@ class _PassInfoListState extends State<PassInfoList> {
     );
   }
 
-  ListView buildPassInfoList() {
-    return ListView.builder(
-        itemCount: passInfoCount,
-        itemBuilder: (BuildContext context, int position) {
-          return Card(
-            elevation: 3.0,
-            child: ListTile(
-              tileColor: colorRandom(),
-              title: Text("${passInfos[position].passName}"),
-              subtitle: Text("${passInfos[position].username}"),
-              trailing: PopupMenuButton(
-                color: Color(0xade5b6c0),
-                onSelected: choiceAction,
-                itemBuilder: (BuildContext context) {
-                  return choices.map((choice) {
-                    return PopupMenuItem(
-                      child: Text(choice),
-                      value: choice,
-                    );
-                  }).toList();
+  buildPassInfoList() {
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: ListView.builder(
+          itemCount: passInfoCount,
+          itemBuilder: (BuildContext context, int position) {
+            return Card(
+              color: Colors.white12,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(17.0),
+                  side: BorderSide(color: appGreen, width: 2.0)),
+              child: ListTile(
+                title: Text(
+                  "${passInfos[position].passName}",
+                  style: TextStyle(
+                    color: Colors.white60,
+                    fontSize: 19,
+                  ),
+                ),
+                subtitle: Text(
+                  "${passInfos[position].username}",
+                  style: TextStyle(color: appGreen2),
+                ),
+                trailing: PopupMenuButton(
+                  color: appGreen,
+                  onSelected: choiceAction,
+                  icon: Icon(Icons.more_vert, color: appGreen2),
+                  itemBuilder: (BuildContext context) {
+                    return choices.map((choice) {
+                      return PopupMenuItem(
+                        child: Text(
+                          choice,
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        value: choice,
+                      );
+                    }).toList();
+                  },
+                ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PasswordDetail(
+                                passInfo: passInfos[position],
+                              )));
                 },
               ),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => PasswordDetail(
-                              passInfo: passInfos[position],
-                            )));
-              },
-            ),
-          );
-        });
+            );
+          }),
+    );
   }
 
   void goToPasswordAdd() async {
@@ -117,9 +135,17 @@ class _PassInfoListState extends State<PassInfoList> {
 
   void choiceAction(String choice) {
     if (choice == choices[0]) {
-      print("Edit");
     } else if (choice == choices[1]) {
       print("DElete");
     }
+  }
+
+  void goToDetail(PassInfo passInfo) async {
+    bool result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => PasswordDetail(
+                  passInfo: passInfo,
+                )));
   }
 }

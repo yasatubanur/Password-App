@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:password_app/constants/constants.dart';
 import 'package:password_app/models/pass_info.dart';
 
 class PasswordDetail extends StatelessWidget {
@@ -10,8 +11,19 @@ class PasswordDetail extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Password Detail"),
-          backgroundColor: Color(0xff87986a),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_rounded),
+            color: Colors.black,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: Text(
+            "${passInfo.passName}",
+            style: TextStyle(color: Colors.white60),
+          ),
+          backgroundColor: appGreen,
+          centerTitle: true,
         ),
         body: Column(
           children: <Widget>[
@@ -29,28 +41,37 @@ class PasswordDetail extends StatelessWidget {
 
   Widget buildPassNameDetail() {
     return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          color: Colors.white12,
+        ),
         padding: EdgeInsets.all(10.0),
         margin: EdgeInsets.all(13.0),
         alignment: Alignment.center,
-        color: Color(0xffb5c99a),
         child: detailRow('PassName', '${passInfo.passName}'));
   }
 
   Widget buildUsernameDetail() {
     return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          color: Colors.white12,
+        ),
         padding: EdgeInsets.all(10.0),
         margin: EdgeInsets.all(13.0),
         alignment: Alignment.center,
-        color: Color(0xffb5c99a),
         child: detailRow('Username', '${passInfo.username}'));
   }
 
   Widget buildPasswordDetail() {
     return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          color: Colors.white12,
+        ),
         padding: EdgeInsets.all(10.0),
         margin: EdgeInsets.all(13.0),
         alignment: Alignment.center,
-        color: Color(0xffb5c99a),
         child: detailRow('Password', '${passInfo.password}'));
   }
 
@@ -60,14 +81,12 @@ class PasswordDetail extends StatelessWidget {
       children: <Widget>[
         Text(
           title,
-          style: TextStyle(fontSize: 18.0),
+          style: TextStyle(fontSize: 18.0, color: appGreen2),
         ),
         Text(
           value,
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 27.0,
-          ),
+          style: TextStyle(fontSize: 25.0, color: Colors.white70),
         ),
       ],
     );
