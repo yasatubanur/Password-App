@@ -8,6 +8,7 @@ import 'package:password_app/models/pass_info.dart';
 import 'package:password_app/screens/password_detail.dart';
 
 import 'add_password.dart';
+import 'edit_password_page.dart';
 
 class PassInfoList extends StatefulWidget {
   const PassInfoList({Key? key}) : super(key: key);
@@ -16,10 +17,24 @@ class PassInfoList extends StatefulWidget {
   _PassInfoListState createState() => _PassInfoListState();
 }
 
+class Operations {
+  Options options;
+  PassInfo passInfo;
+
+  Operations(this.options, this.passInfo);
+}
+
+enum Options { edit, delete }
+
 class _PassInfoListState extends State<PassInfoList> {
   var dbHelper = DbHelper();
   late List<PassInfo> passInfos;
   int passInfoCount = 0;
+
+  late PassInfo passInfo;
+  var txtPassName = TextEditingController();
+  var txtUsername = TextEditingController();
+  var txtPassword = TextEditingController();
 
   List<Color> colors = [
     Color(0xe697A97C),
@@ -54,7 +69,7 @@ class _PassInfoListState extends State<PassInfoList> {
           onPressed: () {
             goToPasswordAdd();
           },
-          child: Icon(Icons.add),
+          child: Icon(Icons.add, color: Colors.white60),
           tooltip: "Add new password",
         ),
       ),
@@ -77,36 +92,49 @@ class _PassInfoListState extends State<PassInfoList> {
                   "${passInfos[position].passName}",
                   style: TextStyle(
                     color: Colors.white60,
-                    fontSize: 19,
+                    fontSize: 20,
                   ),
                 ),
                 subtitle: Text(
                   "${passInfos[position].username}",
                   style: TextStyle(color: appGreen2),
                 ),
-                trailing: PopupMenuButton(
+                trailing: PopupMenuButton<Operations>(
                   color: appGreen,
-                  onSelected: choiceAction,
                   icon: Icon(Icons.more_vert, color: appGreen2),
-                  itemBuilder: (BuildContext context) {
-                    return choices.map((choice) {
-                      return PopupMenuItem(
-                        child: Text(
-                          choice,
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        value: choice,
-                      );
-                    }).toList();
-                  },
+                  onSelected: selectProcess,
+                  itemBuilder: (BuildContext context) =>
+                      <PopupMenuEntry<Operations>>[
+                    PopupMenuItem(
+                      child: Text("Güncelle"),
+                      value: Operations(Options.edit, passInfos[position]),
+                    ),
+                    PopupMenuItem(
+                      child: Text("Sil"),
+                      value: Operations(Options.delete, passInfos[position]),
+                    ),
+                  ],
                 ),
+                //
+                // PopupMenuButton(
+                //   color: appGreen,
+                //   onSelected: choiceAction,
+                //   icon: Icon(Icons.more_vert, color: appGreen2),
+                //   itemBuilder: (BuildContext context) {
+                //     return choices.map((choice) {
+                //       return PopupMenuItem(
+                //         child: Text(
+                //           choice,
+                //           style: TextStyle(color: Colors.black),
+                //         ),
+                //         value: choice,
+                //       );
+                //     }).toList();
+                //   },
+                // ),
+
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => PasswordDetail(
-                                passInfo: passInfos[position],
-                              )));
+                  goToDetailPage(context, position);
                 },
               ),
             );
@@ -114,11 +142,20 @@ class _PassInfoListState extends State<PassInfoList> {
     );
   }
 
+  Future<dynamic> goToDetailPage(BuildContext context, int position) {
+    return Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => PasswordDetail(
+                  passInfo: passInfos[position],
+                )));
+  }
+
   void goToPasswordAdd() async {
     bool result = await Navigator.push(
         context, MaterialPageRoute(builder: (context) => AddPassword()));
-    if (result == true) {
-      getPasswords();
+    if (result != null) {
+      if (result) getPasswords();
     }
   }
 
@@ -133,19 +170,32 @@ class _PassInfoListState extends State<PassInfoList> {
     });
   }
 
-  void choiceAction(String choice) {
-    if (choice == choices[0]) {
-    } else if (choice == choices[1]) {
-      print("DElete");
+  // void choiceAction(String choice) {
+  //   if (choice == choices[0]) {
+  //   } else if (choice == choices[1]) {
+  //     print("DElete");
+  //   }
+  // }
+
+  void selectProcess(Operations operations) async {
+    switch (operations.options) {
+      case Options.delete:
+        await dbHelper.delete(operations.passInfo.id);
+        getPasswords();
+        break;
+      case Options.edit:
+        goToEditPage(context, operations.passInfo);
+        break;
+      default:
     }
   }
 
-  void goToDetail(PassInfo passInfo) async {
-    bool result = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => PasswordDetail(
-                  passInfo: passInfo,
-                )));
+  Future<dynamic> goToEditPage(BuildContext context, PassInfo passInfo) async {
+    print("goToedit in içindeyim");
+    bool result = await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => EditPassword(passInfo)));
+    if (result != null) {
+      if (result) getPasswords();
+    }
   }
 }
