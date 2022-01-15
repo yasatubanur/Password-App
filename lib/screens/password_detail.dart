@@ -13,7 +13,7 @@ class PasswordDetail extends StatelessWidget {
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_rounded),
-            color: Colors.black,
+            color: Colors.white60,
             onPressed: () {
               Navigator.pop(context);
             },
