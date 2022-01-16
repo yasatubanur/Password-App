@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:password_app/constants/constants.dart';
@@ -30,15 +28,6 @@ enum Options { edit, delete }
 class _PassInfoListState extends State<PassInfoList> {
   var dbHelper = DbHelper();
   late List<PassInfo> passInfos;
-
-  List<Color> colors = [
-    Color(0xe697A97C),
-    Color(0xe6C9AE9B),
-  ];
-  final random = Random();
-  Color colorRandom() {
-    return colors[random.nextInt(2)];
-  }
 
   List<String> choices = ["Detail", "Edit", "Delete"];
 
@@ -101,33 +90,15 @@ class _PassInfoListState extends State<PassInfoList> {
                   itemBuilder: (BuildContext context) =>
                       <PopupMenuEntry<Operations>>[
                     PopupMenuItem(
-                      child: Text("Güncelle"),
+                      child: Text("Edit"),
                       value: Operations(Options.edit, passInfos[position]),
                     ),
                     PopupMenuItem(
-                      child: Text("Sil"),
+                      child: Text("Delete"),
                       value: Operations(Options.delete, passInfos[position]),
                     ),
                   ],
                 ),
-                //
-                // PopupMenuButton(
-                //   color: appGreen,
-                //   onSelected: choiceAction,
-                //   icon: Icon(Icons.more_vert, color: appGreen2),
-                //   itemBuilder: (BuildContext context) {
-                //     return choices.map((choice) {
-                //       return PopupMenuItem(
-                //         child: Text(
-                //           choice,
-                //           style: TextStyle(color: Colors.black),
-                //         ),
-                //         value: choice,
-                //       );
-                //     }).toList();
-                //   },
-                // ),
-
                 onTap: () {
                   goToDetailPage(context, position);
                 },
@@ -158,18 +129,10 @@ class _PassInfoListState extends State<PassInfoList> {
     var passInfosFuture = dbHelper.getPassInfos();
     passInfosFuture.then((data) {
       setState(() {
-        print("getPassword.data : ${data.length}");
         passInfos = data;
       });
     });
   }
-
-  // void choiceAction(String choice) {
-  //   if (choice == choices[0]) {
-  //   } else if (choice == choices[1]) {
-  //     print("DElete");
-  //   }
-  // }
 
   _showDialog(BuildContext context, Future<int> delete()) {
     VoidCallback continueCallBack = () => {
@@ -205,7 +168,6 @@ class _PassInfoListState extends State<PassInfoList> {
   }
 
   Future<dynamic> goToEditPage(BuildContext context, PassInfo passInfo) async {
-    print("goToedit in içindeyim");
     bool result = await Navigator.push(context,
         MaterialPageRoute(builder: (context) => EditPassword(passInfo)));
     if (result != null) {

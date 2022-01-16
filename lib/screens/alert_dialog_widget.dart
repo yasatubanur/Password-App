@@ -22,7 +22,7 @@ class BlurryDialog extends StatelessWidget {
           actions: <Widget>[
             TextButton(
               child: Text(
-                "Continue",
+                "Delete",
                 style: textStyle,
               ),
               onPressed: () {
