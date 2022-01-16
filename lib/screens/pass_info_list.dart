@@ -8,6 +8,7 @@ import 'package:password_app/models/pass_info.dart';
 import 'package:password_app/screens/password_detail.dart';
 
 import 'add_password.dart';
+import 'alert_dialog_widget.dart';
 import 'edit_password_page.dart';
 
 class PassInfoList extends StatefulWidget {
@@ -29,12 +30,6 @@ enum Options { edit, delete }
 class _PassInfoListState extends State<PassInfoList> {
   var dbHelper = DbHelper();
   late List<PassInfo> passInfos;
-  int passInfoCount = 0;
-
-  late PassInfo passInfo;
-  var txtPassName = TextEditingController();
-  var txtUsername = TextEditingController();
-  var txtPassword = TextEditingController();
 
   List<Color> colors = [
     Color(0xe697A97C),
@@ -80,7 +75,7 @@ class _PassInfoListState extends State<PassInfoList> {
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: ListView.builder(
-          itemCount: passInfoCount,
+          itemCount: passInfos.length,
           itemBuilder: (BuildContext context, int position) {
             return Card(
               color: Colors.white12,
@@ -165,7 +160,6 @@ class _PassInfoListState extends State<PassInfoList> {
       setState(() {
         print("getPassword.data : ${data.length}");
         passInfos = data;
-        passInfoCount = data.length;
       });
     });
   }
@@ -177,11 +171,31 @@ class _PassInfoListState extends State<PassInfoList> {
   //   }
   // }
 
+  _showDialog(BuildContext context, Future<int> delete()) {
+    VoidCallback continueCallBack = () => {
+          Navigator.of(context).pop(),
+          delete(),
+        };
+    BlurryDialog alert = BlurryDialog("Delete",
+        "Are you sure you want to delete this password?", continueCallBack);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   void selectProcess(Operations operations) async {
     switch (operations.options) {
       case Options.delete:
-        await dbHelper.delete(operations.passInfo.id);
-        getPasswords();
+        _showDialog(context, () async {
+          int result = await dbHelper.delete(operations.passInfo.id);
+          getPasswords();
+          return result;
+        });
+
         break;
       case Options.edit:
         goToEditPage(context, operations.passInfo);
