@@ -18,7 +18,9 @@ class _AddPasswordState extends State<AddPassword> {
   var txtPassword = TextEditingController();
   var dbHelper = DbHelper();
 
-  bool _validate = false;
+  bool _validatePassName = false;
+  bool _validateUsername = false;
+  bool _validatePassword = false;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +72,7 @@ class _AddPasswordState extends State<AddPassword> {
       decoration: InputDecoration(
         labelText: "Password Name",
         hintText: "Enter app name",
-        errorText: _validate ? "Please enter a app name" : null,
+        errorText: _validatePassName ? "Please enter a app name" : null,
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: appGreen2),
         ),
@@ -83,8 +85,8 @@ class _AddPasswordState extends State<AddPassword> {
     return TextField(
       decoration: InputDecoration(
         labelText: "Username",
-        hintText: "yasatuba",
-        errorText: _validate ? "Please enter a username" : null,
+        hintText: "Enter a username",
+        errorText: _validateUsername ? "Please enter a username" : null,
       ),
       controller: txtUsername,
     );
@@ -94,8 +96,8 @@ class _AddPasswordState extends State<AddPassword> {
     return TextField(
       decoration: InputDecoration(
         labelText: "Password",
-        hintText: "12345",
-        errorText: _validate ? "Password can't be Empty !" : null,
+        hintText: "Enter password",
+        errorText: _validatePassword ? "Password can't be Empty !" : null,
       ),
       controller: txtPassword,
     );
@@ -103,13 +105,21 @@ class _AddPasswordState extends State<AddPassword> {
 
   void addPassword() async {
     setState(() {
-      txtPassName.text.isEmpty ? _validate = true : _validate = false;
-      txtUsername.text.isEmpty ? _validate = true : _validate = false;
-      txtPassword.text.isEmpty ? _validate = true : _validate = false;
+      txtPassName.text.isEmpty
+          ? _validatePassName = true
+          : _validatePassName = false;
+      txtUsername.text.isEmpty
+          ? _validateUsername = true
+          : _validateUsername = false;
+      txtPassword.text.isEmpty
+          ? _validatePassword = true
+          : _validatePassword = false;
     });
     print(
         "AddPasword: textName: ${txtPassName.text},username: ${txtUsername.text} ,password: ${txtPassword.text}");
-    if (_validate == false) {
+    if (_validatePassName == false &&
+        _validateUsername == false &&
+        _validatePassword == false) {
       var result = await dbHelper.insert(
           PassInfo(txtPassName.text, txtUsername.text, txtPassword.text));
       Navigator.pop(context, true);

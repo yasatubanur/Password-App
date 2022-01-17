@@ -86,7 +86,7 @@ class _EditPasswordState extends State {
     return TextField(
       decoration: InputDecoration(
         labelText: "Password Name",
-        hintText: "Password App",
+        hintText: "Please enter a app name",
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: appGreen2),
         ),
@@ -99,7 +99,7 @@ class _EditPasswordState extends State {
     return TextField(
       decoration: InputDecoration(
         labelText: "Username",
-        hintText: "yasatuba",
+        hintText: "Please enter a username",
       ),
       controller: txtUsername,
     );
@@ -109,7 +109,7 @@ class _EditPasswordState extends State {
     return TextField(
       decoration: InputDecoration(
         labelText: "Password",
-        hintText: "12345",
+        hintText: "Please enter password",
       ),
       controller: txtPassword,
     );
