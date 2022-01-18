@@ -34,14 +34,12 @@ class DbHelper {
   Future<int> insert(PassInfo passInfo) async {
     Database db = await this.db;
     var result = await db.insert("passwordInfo", passInfo.toMap());
-    print("dbHelper.insert : result : $result");
     return result;
   }
 
   Future<int> delete(int id) async {
     Database db = await this.db;
     var result = await db.rawDelete("delete from passwordInfo where id = $id");
-    print("dbHelper.delete : result : $result");
     return result;
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:password_app/constants/constants.dart';
 import 'package:password_app/data/db_helper.dart';
 import 'package:password_app/models/pass_info.dart';
+import 'package:password_app/screens/widgets/text_field_widget.dart';
 
 class EditPassword extends StatefulWidget {
   PassInfo passInfo;
@@ -19,13 +20,15 @@ class _EditPasswordState extends State {
   var txtPassword = TextEditingController();
   var dbHelper = DbHelper();
 
+  bool _validatePassName = false;
+  bool _validateUsername = false;
+  bool _validatePassword = false;
+
   @override
   void initState() {
-    print("initState edit page");
-    txtPassName.text = this.passInfo.passName!;
-    txtUsername.text = this.passInfo.username!;
-    txtPassword.text = this.passInfo.password!;
-    print("end of init");
+    txtPassName.text = passInfo.passName!;
+    txtUsername.text = passInfo.username!;
+    txtPassword.text = passInfo.password!;
     super.initState();
   }
 
@@ -35,7 +38,7 @@ class _EditPasswordState extends State {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_rounded),
+            icon: const Icon(Icons.arrow_back_ios_rounded),
             color: Colors.white38,
             onPressed: () {
               Navigator.pop(context);
@@ -43,7 +46,7 @@ class _EditPasswordState extends State {
           ),
           title: Text(
             "${passInfo.passName}",
-            style: TextStyle(color: Colors.white60),
+            style: const TextStyle(color: Colors.white60),
           ),
           backgroundColor: appGreen,
           centerTitle: true,
@@ -56,7 +59,7 @@ class _EditPasswordState extends State {
               onPressed: () {
                 updatePassword();
               },
-              child: Text(
+              child: const Text(
                 "Save",
                 style: TextStyle(color: Colors.white60),
               ),
@@ -74,53 +77,39 @@ class _EditPasswordState extends State {
       child: Column(
         children: <Widget>[
           const SizedBox(height: 15),
-          buildPassNameField(),
-          buildUsernameField(),
-          buildPasswordField(),
+          buildTextField(
+              "PassName",
+              "Enter a password name",
+              _validatePassName ? "Please enter a app name" : null,
+              txtPassName),
+          buildTextField(
+              "Username",
+              "Enter a username",
+              _validateUsername ? "Please enter a username" : null,
+              txtUsername),
+          buildTextField(
+              "Password",
+              "Enter a password",
+              _validatePassword ? "Please enter a password" : null,
+              txtPassword),
         ],
       ),
     );
   }
 
-  Widget buildPassNameField() {
-    return TextField(
-      decoration: InputDecoration(
-        labelText: "Password Name",
-        hintText: "Please enter a app name",
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: appGreen2),
-        ),
-      ),
-      controller: txtPassName,
-    );
-  }
-
-  Widget buildUsernameField() {
-    return TextField(
-      decoration: InputDecoration(
-        labelText: "Username",
-        hintText: "Please enter a username",
-      ),
-      controller: txtUsername,
-    );
-  }
-
-  Widget buildPasswordField() {
-    return TextField(
-      decoration: InputDecoration(
-        labelText: "Password",
-        hintText: "Please enter password",
-      ),
-      controller: txtPassword,
-    );
-  }
-
   void updatePassword() async {
-    print(
-        "updatePasword: textName: ${txtPassName.text},update username: ${txtUsername.text} ,password: ${txtPassword.text}");
+    setState(() {
+      _validatePassName = txtPassName.text.isEmpty;
+      _validateUsername = txtUsername.text.isEmpty;
+      _validatePassword = txtPassword.text.isEmpty;
+    });
 
-    var result = await dbHelper.update(PassInfo.withId(
-        passInfo.id, txtPassName.text, txtUsername.text, txtPassword.text));
-    Navigator.pop(context, true);
+    if (_validatePassName == false &&
+        _validateUsername == false &&
+        _validatePassword == false) {
+      var _ = await dbHelper.update(PassInfo.withId(
+          passInfo.id, txtPassName.text, txtUsername.text, txtPassword.text));
+      Navigator.pop(context, true);
+    }
   }
 }

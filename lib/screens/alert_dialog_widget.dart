@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 class BlurryDialog extends StatelessWidget {
@@ -8,7 +7,7 @@ class BlurryDialog extends StatelessWidget {
   VoidCallback continueCallBack;
 
   BlurryDialog(this.title, this.content, this.continueCallBack);
-  TextStyle textStyle = TextStyle(color: Colors.white60);
+  TextStyle textStyle = const TextStyle(color: Colors.white60);
 
   @override
   Widget build(BuildContext context) {

@@ -12,7 +12,7 @@ class PasswordDetail extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_rounded),
+            icon: const Icon(Icons.arrow_back_ios_rounded),
             color: Colors.white60,
             onPressed: () {
               Navigator.pop(context);
@@ -20,7 +20,7 @@ class PasswordDetail extends StatelessWidget {
           ),
           title: Text(
             "${passInfo.passName}",
-            style: TextStyle(color: Colors.white60),
+            style: const TextStyle(color: Colors.white60),
           ),
           backgroundColor: appGreen,
           centerTitle: true,
@@ -30,49 +30,25 @@ class PasswordDetail extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(10.0),
             ),
-            buildPassNameDetail(),
-            buildUsernameDetail(),
-            buildPasswordDetail(),
+            buildDetailContainer("PassName", '${passInfo.passName}'),
+            buildDetailContainer("Username", '${passInfo.username}'),
+            buildDetailContainer("Password", '${passInfo.password}'),
           ],
         ),
       ),
     );
   }
 
-  Widget buildPassNameDetail() {
+  Widget buildDetailContainer(String title, String value) {
     return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
           color: Colors.white12,
         ),
-        padding: EdgeInsets.all(10.0),
-        margin: EdgeInsets.all(13.0),
+        padding: const EdgeInsets.all(10.0),
+        margin: const EdgeInsets.all(13.0),
         alignment: Alignment.center,
-        child: detailRow('PassName', '${passInfo.passName}'));
-  }
-
-  Widget buildUsernameDetail() {
-    return Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          color: Colors.white12,
-        ),
-        padding: EdgeInsets.all(10.0),
-        margin: EdgeInsets.all(13.0),
-        alignment: Alignment.center,
-        child: detailRow('Username', '${passInfo.username}'));
-  }
-
-  Widget buildPasswordDetail() {
-    return Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          color: Colors.white12,
-        ),
-        padding: EdgeInsets.all(10.0),
-        margin: EdgeInsets.all(13.0),
-        alignment: Alignment.center,
-        child: detailRow('Password', '${passInfo.password}'));
+        child: detailRow(title, value));
   }
 
   Widget detailRow(String title, String value) {
@@ -86,7 +62,7 @@ class PasswordDetail extends StatelessWidget {
         Text(
           value,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 25.0, color: Colors.white70),
+          style: const TextStyle(fontSize: 25.0, color: Colors.white70),
         ),
       ],
     );

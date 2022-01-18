@@ -29,8 +29,6 @@ class _PassInfoListState extends State<PassInfoList> {
   var dbHelper = DbHelper();
   late List<PassInfo> passInfos;
 
-  List<String> choices = ["Detail", "Edit", "Delete"];
-
   @override
   void initState() {
     getPasswords();
@@ -42,18 +40,17 @@ class _PassInfoListState extends State<PassInfoList> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Password Informations",
+          title: const Text("Password Informations",
               style: TextStyle(color: Colors.white60)),
           backgroundColor: appGreen,
         ),
         body: buildPassInfoList(),
         floatingActionButton: FloatingActionButton(
           backgroundColor: appGreen,
-          splashColor: Color(0xe6a07780),
           onPressed: () {
             goToPasswordAdd();
           },
-          child: Icon(Icons.add, color: Colors.white60),
+          child: const Icon(Icons.add, color: Colors.white60),
           tooltip: "Add new password",
         ),
       ),
@@ -74,7 +71,7 @@ class _PassInfoListState extends State<PassInfoList> {
               child: ListTile(
                 title: Text(
                   "${passInfos[position].passName}",
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white60,
                     fontSize: 20,
                   ),
@@ -83,28 +80,31 @@ class _PassInfoListState extends State<PassInfoList> {
                   "${passInfos[position].username}",
                   style: TextStyle(color: appGreen2),
                 ),
-                trailing: PopupMenuButton<Operations>(
-                  color: appGreen,
-                  icon: Icon(Icons.more_vert, color: appGreen2),
-                  onSelected: selectProcess,
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<Operations>>[
-                    PopupMenuItem(
-                      child: Text("Edit"),
-                      value: Operations(Options.edit, passInfos[position]),
-                    ),
-                    PopupMenuItem(
-                      child: Text("Delete"),
-                      value: Operations(Options.delete, passInfos[position]),
-                    ),
-                  ],
-                ),
+                trailing: buildPopupMenuButton(position),
                 onTap: () {
                   goToDetailPage(context, position);
                 },
               ),
             );
           }),
+    );
+  }
+
+  PopupMenuButton<Operations> buildPopupMenuButton(int position) {
+    return PopupMenuButton<Operations>(
+      color: appGreen,
+      icon: Icon(Icons.more_vert, color: appGreen2),
+      onSelected: selectProcess,
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<Operations>>[
+        PopupMenuItem(
+          child: const Text("Edit"),
+          value: Operations(Options.edit, passInfos[position]),
+        ),
+        PopupMenuItem(
+          child: const Text("Delete"),
+          value: Operations(Options.delete, passInfos[position]),
+        ),
+      ],
     );
   }
 
@@ -119,7 +119,7 @@ class _PassInfoListState extends State<PassInfoList> {
 
   void goToPasswordAdd() async {
     bool result = await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => AddPassword()));
+        context, MaterialPageRoute(builder: (context) => const AddPassword()));
     if (result != null) {
       if (result) getPasswords();
     }
@@ -134,7 +134,7 @@ class _PassInfoListState extends State<PassInfoList> {
     });
   }
 
-  _showDialog(BuildContext context, Future<int> delete()) {
+  _showDialog(BuildContext context, Future<int> Function() delete) {
     VoidCallback continueCallBack = () => {
           Navigator.of(context).pop(),
           delete(),
@@ -158,7 +158,6 @@ class _PassInfoListState extends State<PassInfoList> {
           getPasswords();
           return result;
         });
-
         break;
       case Options.edit:
         goToEditPage(context, operations.passInfo);
